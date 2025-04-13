@@ -201,6 +201,7 @@ sudo systemctl status prysm-beacon
 sudo journalctl -fu prysm-beacon
 ```
 
+exit with `Ctrl + C`
 
 
 
