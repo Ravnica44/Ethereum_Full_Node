@@ -196,7 +196,7 @@ sudo systemctl enable prysm-beacon
 sudo systemctl status prysm-beacon
 ```
 
-### View the log
+### View the logs
 ```shell
 sudo journalctl -fu prysm-beacon
 ```
