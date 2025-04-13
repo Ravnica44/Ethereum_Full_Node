@@ -146,3 +146,62 @@ sudo -u prysm-beacon curl https://raw.githubusercontent.com/prysmaticlabs/prysm/
 sudo -u prysm-beacon chmod +x /home/prysm-beacon/bin/prysm.sh
 ```
 
+### Create a Systemd Service for Prysm
+```shell
+sudo nano /etc/systemd/system/prysm-beacon.service
+```
+
+### Add the following configuration to the file
+```shell
+[Unit]
+Description=Prysm Beacon Chain
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5s
+User=prysm-beacon
+ExecStart=/home/prysm-beacon/bin/prysm.sh beacon-chain \
+  --mainnet \
+  --datadir /home/prysm-beacon/beacon \
+  --execution-endpoint=http://127.0.0.1:8551 \
+  --jwt-secret=/var/lib/secrets/jwt.hex \
+  --suggested-fee-recipient=YourWalletAddress \
+  --checkpoint-sync-url=https://beaconstate.info \
+  --genesis-beacon-api-url=https://beaconstate.info \
+  --accept-terms-of-use \
+  --rpc-port=4002 \
+  --grpc-gateway-port=4003 \
+  --p2p-quic-port=13000 \
+  --p2p-tcp-port=13000 \
+  --p2p-udp-port=12000 \
+  --monitoring-port=8080 \
+  --pprofport=6060
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Start and Enable the Prysm Service
+```shell
+sudo systemctl daemon-reload
+sudo systemctl start prysm-beacon
+sudo systemctl enable prysm-beacon
+```
+
+### Check the Status of the Prysm Service
+```shell
+sudo systemctl status prysm-beacon
+```
+
+### View the log
+```shell
+sudo journalctl -fu prysm-beacon
+```
+
+
+
+
+
